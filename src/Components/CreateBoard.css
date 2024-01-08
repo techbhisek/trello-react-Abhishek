@@ -1,0 +1,26 @@
+.board-backgrounder {
+  background-image: url('https://trello-backgrounds.s3.amazonaws.com/SharedBackground/original/1fb51038278451f32953642dcf867f26/photo-1703818770847-0f2948e0611b');
+  background-size: cover;
+  background-position: center;
+  width: 200px;
+  height: 150px;
+  padding: 10px;
+}
+.main-board-created {
+  font-size: 20px;
+  width: 300px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.input-bar {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  column-gap: 10px;
+}
+.input-bar > input {
+  margin-top: 10px;
+}

@@ -1,0 +1,20 @@
+.board-card {
+  margin: 10px 10px;
+  width: 200px;
+  font-weight: 600;
+  color: white;
+  height: 100px;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.board-card > h4 {
+  margin: 20px;
+}
+.star {
+  position: relative;
+  left: 170px;
+}
+.board-card:hover {
+  cursor: pointer;
+  backdrop-filter: blue(5px);
+}
