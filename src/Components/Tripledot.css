@@ -1,0 +1,30 @@
+.dot {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+.dot:hover,
+.sub-heading:hover {
+  cursor: pointer;
+}
+.poper {
+  width: 200px;
+  height: 250px;
+  padding: 20px 10px;
+}
+.dot-main-heading {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sub-heading {
+  font-size: 18px;
+  font-weight: 600;
+  width: auto;
+  box-shadow: 1px 1px 5px black;
+  padding: 5px;
+  border-radius: 5px;
+}

@@ -1,0 +1,22 @@
+.board-cards {
+  margin-top: 20px;
+  width: 230px;
+  font-weight: 600;
+  color: white;
+
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+.board-cards > h4 {
+  margin: 20px;
+}
+a {
+  text-decoration: none;
+}
+.board-cards:hover {
+  cursor: pointer;
+  backdrop-filter: blue(5px);
+}

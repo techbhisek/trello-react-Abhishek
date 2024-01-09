@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import push from './Push';
 import { useNavigate } from 'react-router-dom';
+
 export default function CreateBoard({ length }) {
   const [search, setSearch] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const [link, setLink] = useState(undefined);
-  console.log(link);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -71,7 +72,7 @@ export default function CreateBoard({ length }) {
           <Button
             onClick={() => {
               setSearch('');
-              handlePush(search, navigate);
+              push(search, navigate);
 
               open = Boolean(anchorEl);
             }}
@@ -82,8 +83,4 @@ export default function CreateBoard({ length }) {
       </Popover>
     </div>
   );
-}
-
-function handlePush(name, navigate) {
-  push(name, navigate);
 }

@@ -8,7 +8,10 @@ import { Avatar } from '@mui/material';
 const Header = () => {
   return (
     <header>
-      <h4 className="heading"></h4>
+      <a href="/">
+        {' '}
+        <h4 className="heading"></h4>
+      </a>
       <div className="side-bar">
         <Search className="name">
           <SearchIconWrapper>

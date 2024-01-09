@@ -1,4 +1,3 @@
-import get from './Components/get';
 import './App.css';
 import Header from './Components/Header';
 
@@ -12,7 +11,6 @@ import {
 import { Board } from './Components/Board';
 import { List } from './Components/List';
 function App() {
-  get();
   return (
     <>
       <div>
@@ -23,7 +21,7 @@ function App() {
               path="/"
               element={
                 <div id="main">
-                  <PermanentDrawerLeft />
+                  <PermanentDrawerLeft state={false} />
                   <Board />
                 </div>
               }
@@ -32,7 +30,7 @@ function App() {
               path="/board/:id"
               element={
                 <div id="main">
-                  <PermanentDrawerLeft />
+                  <PermanentDrawerLeft state={true} />
                   <List />
                 </div>
               }

@@ -1,19 +1,37 @@
-.contain,
 .cont {
   display: flex;
-  width: auto;
   flex-wrap: nowrap;
-  height: 85vh;
-  background-color: rgb(0, 121, 191);
-  /* background-image: url('https://trello-backgrounds.s3.amazonaws.com/SharedBackground/1200x1600/97b255ee589a3cfc1efa9d48814d60d7/photo-1703818770847-0f2948e0611b.jpg');
-  background-position: center;
+  height: 94.6vh;
+  width: 90vw;
   background-repeat: no-repeat;
-  background-size: cover; */
+  background-size: cover;
+
+  flex-direction: column;
 }
-.cont {
+
+#contain {
+  height: 500px;
+  max-width: 80vw;
   overflow-x: scroll;
-  width: 85vw;
+  display: flex;
 }
+
+#contain::-webkit-scrollbar {
+  display: none;
+}
+
 h1 {
   margin: 20px;
+}
+.list-header {
+  color: 'white';
+  font-size: 20px;
+  font-weight: 700;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.219);
+  backdrop-filter: blur(5px);
+  padding: 10px;
+  box-sizing: border-box;
+  color: white;
 }
