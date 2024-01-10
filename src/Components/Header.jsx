@@ -5,9 +5,20 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import { Avatar } from '@mui/material';
+import { useParams, useLocation } from 'react-router-dom';
 const Header = () => {
+  const { id } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  // const name = searchParams.get('name');
+  const color = '#' + searchParams.get('color');
+
+  let style;
+  if (color && id) {
+    style = { backgroundColor: color };
+  }
   return (
-    <header>
+    <header style={style}>
       <a href="/">
         {' '}
         <h4 className="heading"></h4>

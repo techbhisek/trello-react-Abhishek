@@ -10,7 +10,7 @@ const Card = ({ board }) => {
   }
   return (
     <div
-      onMouseOver={() => {
+      onMouseEnter={() => {
         setStar(!star);
       }}
       onMouseLeave={() => {

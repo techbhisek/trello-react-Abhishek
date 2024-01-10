@@ -108,3 +108,7 @@ q:after {
 table {
   border-collapse: collapse;
 }
+#root {
+  display: flex;
+  flex-direction: column;
+}

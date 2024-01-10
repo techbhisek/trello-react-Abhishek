@@ -41,7 +41,18 @@ export const Board = () => {
           <div className="sub-container">
             {data.map((board) => {
               return (
-                <Link key={board.id} to={'/board/' + board.id}>
+                <Link
+                  key={board.id}
+                  to={
+                    '/board/' +
+                    board.id +
+                    `?name=${board.prefs.backgroundImage}&color=${
+                      board.prefs.backgroundColor
+                        ? board.prefs.backgroundBottomColor.slice(1)
+                        : null
+                    }`
+                  }
+                >
                   <Card board={board} />
                 </Link>
               );

@@ -35,3 +35,15 @@ h1 {
   box-sizing: border-box;
   color: white;
 }
+.add-block {
+  width: 200px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 5px;
+  box-sizing: border-box;
+  font-size: 18px;
+  font-weight: 500;
+}

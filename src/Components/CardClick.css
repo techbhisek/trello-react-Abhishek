@@ -1,0 +1,83 @@
+.create {
+  position: absolute;
+  top: 205px;
+  left: 65vw;
+  width: 300px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  z-index: 1;
+  padding: 10px 10px;
+  background-color: white;
+}
+.Checkpop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 600;
+}
+.create > div > textarea {
+  width: 100%;
+}
+.body-div {
+  width: 100vw;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0, 0, 0, 0.726);
+  position: absolute;
+  box-sizing: border-box;
+}
+.box-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+.card-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: 700;
+  width: max-content;
+  box-sizing: border-box;
+}
+.div-container {
+  display: flex;
+}
+.Left {
+  width: 80%;
+  height: 85vh;
+  padding-top: 30px;
+}
+.Right {
+  width: 20%;
+  height: 85vh;
+  padding-top: 30px;
+  box-sizing: border-box;
+}
+
+.checklist {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 17px;
+  font-weight: 700;
+  background-color: rgb(228, 230, 234);
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+.checklist:hover {
+  cursor: pointer;
+}
+#name {
+  margin-left: 20px;
+  padding: 20px;
+}

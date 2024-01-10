@@ -13,6 +13,7 @@ export const List = () => {
   const [search, setSearch] = useState('');
   const [shower, setShower] = useState(false);
   let { id } = useParams();
+
   useEffect(() => {
     get(setBack);
 
@@ -76,6 +77,7 @@ export const List = () => {
           )}
           {shower && (
             <div className="add-block">
+              Add new card
               <TextField
                 id="outlined-basic"
                 onChange={(e) => {
@@ -84,7 +86,6 @@ export const List = () => {
                 label="Outlined"
                 variant="outlined"
               />
-
               <Button
                 onClick={() => {
                   if (search) {

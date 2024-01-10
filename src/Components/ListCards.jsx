@@ -4,16 +4,18 @@ import './ListCards.css';
 import { Key } from '../assets/Key';
 import { Token } from '../assets/Token';
 import Tripledot from './Tripledot';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import CardClick from './CardClick';
+import { Button } from '@mui/material';
 
 export const ListCards = ({ id, name }) => {
   const [show, setShow] = useState(true);
   const [text, setText] = useState('');
   const [cards, setCards] = useState([]);
-  const [deletecard, setDeletecard] = useState([]);
+  const [deletecard, setDeletecard] = useState(true);
 
   const [edit, setEdit] = useState('');
+  const [idCard, setIdcard] = useState('');
   const [showedit, setShowedit] = useState(false);
   const [archive, SetArchive] = useState(false);
   const [editcard, setEditcard] = useState(false);
@@ -29,6 +31,10 @@ export const ListCards = ({ id, name }) => {
 
   function HandleData(newCard) {
     setCards([...cards, ...[newCard]]);
+  }
+
+  function HandleDelete() {
+    setDeletecard(!deletecard);
   }
   // fetcher(id);
   function FetchData() {
@@ -53,16 +59,11 @@ export const ListCards = ({ id, name }) => {
   return (
     <div className="card">
       {showedit && (
-        <div className="edit">
-          <h1>{edit}</h1>
-          <button
-            onClick={() => {
-              setShowedit(false);
-            }}
-          >
-            X
-          </button>
-        </div>
+        <CardClick
+          name={edit}
+          idCard={idCard}
+          setShowedit={setShowedit}
+        />
       )}
 
       <div className="name">
@@ -85,14 +86,17 @@ export const ListCards = ({ id, name }) => {
               onDoubleClick={() => {
                 setShowedit(true);
                 setEdit(element.name);
+                setIdcard(element.id);
               }}
               key={element.id}
             >
               {element.name}{' '}
-              {editcard && (
-                <DeleteIcon
+              {true && (
+                <ArchiveIcon
+                  style={{ zIndex: '2' }}
+                  id="delete"
                   onClick={() => {
-                    Deletecard(element.id, setDeletecard);
+                    Deletecard(element.id, HandleDelete);
                   }}
                 />
               )}
@@ -102,25 +106,25 @@ export const ListCards = ({ id, name }) => {
       })}
 
       {!show && (
-        <div>
+        <div className="Addcard">
           <textarea
             onChange={(e) => {
               setText(e.target.value);
             }}
             value={text}
           />{' '}
-          <button
-            style={{ backgroundColor: 'blue' }}
+          <Button
+            id="button-add"
             onClick={() => {
               fetcherCreater(id, text, HandleData);
               setText('');
               setShow(true);
             }}
-            type="text"
+            variant="contained"
           >
             {' '}
             Add +{' '}
-          </button>
+          </Button>
         </div>
       )}
 
@@ -167,7 +171,7 @@ function fetcherCreater(id, text, HandleData) {
     .catch((err) => console.error(err));
 }
 
-function Deletecard(id, setDeletecard) {
+function Deletecard(id, HandleDelete) {
   fetch(
     `https://api.trello.com/1/cards/${id}?key=${Key}&token=${Token}`,
     {
@@ -181,7 +185,7 @@ function Deletecard(id, setDeletecard) {
       return response.text();
     })
     .then(() => {
-      setDeletecard(...[]);
+      HandleDelete();
     })
     .catch((err) => console.error(err));
 }

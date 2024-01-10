@@ -14,24 +14,29 @@ function App() {
   return (
     <>
       <div>
-        <Header />
         <Router>
           <Routes>
             <Route
               path="/"
               element={
-                <div id="main">
-                  <PermanentDrawerLeft state={false} />
-                  <Board />
+                <div>
+                  <Header />
+                  <div id="main">
+                    <PermanentDrawerLeft state={false} />
+                    <Board />
+                  </div>
                 </div>
               }
             />
             <Route
               path="/board/:id"
               element={
-                <div id="main">
-                  <PermanentDrawerLeft state={true} />
-                  <List />
+                <div>
+                  <Header />
+                  <div id="main">
+                    <PermanentDrawerLeft state={true} />
+                    <List />
+                  </div>
                 </div>
               }
             />

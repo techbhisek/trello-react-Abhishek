@@ -9,6 +9,7 @@
   padding: 10px;
   color: white;
   text-align: center;
+  border: 1px solid white;
 }
 .board-cards > h4 {
   margin: 20px;

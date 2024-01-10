@@ -6,13 +6,15 @@
   height: 100px;
   box-sizing: border-box;
   border-radius: 4px;
+  padding: 5px;
 }
 .board-card > h4 {
   margin: 20px;
 }
 .star {
   position: relative;
-  left: 170px;
+  left: 150px;
+  z-index: 2;
 }
 .board-card:hover {
   cursor: pointer;
