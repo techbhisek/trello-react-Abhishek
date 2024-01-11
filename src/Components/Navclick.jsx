@@ -1,15 +1,12 @@
 /* eslint-disable react/no-unknown-property */
-import { useEffect, useState } from 'react';
-import get from './get';
+import { useContext } from 'react';
+
 import Cardside from './Cardside';
 import './Board.css';
 import { Link } from 'react-router-dom';
+import { BoardsData } from '../App';
 export const Navclick = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    get(setData);
-  }, []);
+  let data = useContext(BoardsData);
 
   if (data.length != 0) {
     return (

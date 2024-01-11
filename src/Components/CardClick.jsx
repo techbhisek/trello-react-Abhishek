@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { Button } from '@mui/material';
 import { useEffect } from 'react';
 import './CardClick.css';
-import { Key } from '../assets/Key';
-import { Token } from '../assets/Token';
+import Error from './Error';
+import { getchecklist, Createchecklist } from '../Api';
 const CardClick = ({ name, idCard, setShowedit }) => {
   const [check, setCheckbox] = useState(false);
   const [list, setlist] = useState([]);
@@ -15,7 +15,7 @@ const CardClick = ({ name, idCard, setShowedit }) => {
   const [change, setChange] = useState(false);
 
   useEffect(() => {
-    getchecklist(idCard, Handlechecklist);
+    getchecklist(idCard, Handlechecklist, HandleError);
   }, [change]);
 
   function Handlechecklist(data) {
@@ -28,11 +28,16 @@ const CardClick = ({ name, idCard, setShowedit }) => {
 
   function HandleData(info) {
     setlist(() => [...list, info]);
-    console.log(list);
+  }
+  const [error, setError] = useState('');
+
+  function HandleError(error) {
+    setError(error);
   }
 
   return (
     <div className="body-div">
+      {error && <Error error={error} HandleError={HandleError} />}
       {check && (
         <div className="create">
           <div className="Checkpop">
@@ -43,7 +48,7 @@ const CardClick = ({ name, idCard, setShowedit }) => {
               onClick={() => {
                 setCheckbox(!check);
               }}
-              variant="oo"
+              variant="new"
             >
               X
             </Button>
@@ -63,7 +68,7 @@ const CardClick = ({ name, idCard, setShowedit }) => {
             onClick={() => {
               setText('');
               setCheckbox(!check);
-              Createchecklist(idCard, text, HandleData);
+              Createchecklist(idCard, text, HandleData, HandleError);
             }}
             variant="contained"
           >
@@ -71,7 +76,6 @@ const CardClick = ({ name, idCard, setShowedit }) => {
           </Button>
         </div>
       )}
-
       <div className="edit">
         <div className="box-heading">
           <h1 className="card-name">
@@ -120,41 +124,3 @@ const CardClick = ({ name, idCard, setShowedit }) => {
 };
 
 export default CardClick;
-
-function Createchecklist(idCard, name, HandleData) {
-  fetch(
-    `https://api.trello.com/1/checklists?idCard=${idCard}&key=${Key}&token=${Token}&name=${name}`,
-    {
-      method: 'POST',
-    }
-  )
-    .then((response) => {
-      console.log(
-        `Response: ${response.status} ${response.statusText}`
-      );
-      return response.json();
-    })
-    .then((text) => {
-      HandleData(text);
-    })
-    .catch((err) => console.error(err));
-}
-
-function getchecklist(idCard, Handlechecklist) {
-  fetch(
-    `https://api.trello.com/1/cards/${idCard}/checklists?key=${Key}&token=${Token}`,
-    {
-      method: 'GET',
-    }
-  )
-    .then((response) => {
-      console.log(
-        `Response: ${response.status} ${response.statusText}`
-      );
-      return response.json();
-    })
-    .then((text) => {
-      return Handlechecklist(text);
-    })
-    .catch((err) => console.error(err));
-}

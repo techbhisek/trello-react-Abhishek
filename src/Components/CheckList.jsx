@@ -4,8 +4,12 @@ import { Button } from '@mui/material';
 import './CheckList.css';
 import { LinearProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Token } from '../assets/Token';
-import { Key } from '../assets/Key';
+import Error from './Error';
+import {
+  getcheckItem,
+  deleteChecklist,
+  createchecktask,
+} from '../Api';
 import CheckCard from './CheckCard';
 const CheckList = ({ name, idCheck, idCard, HandleChange }) => {
   const [show, setShow] = useState(true);
@@ -13,6 +17,7 @@ const CheckList = ({ name, idCheck, idCard, HandleChange }) => {
   const [text, setText] = useState('');
   const [value, setValue] = useState(0);
   const [changelist, setChangelist] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getcheckItem(idCheck, HandleCheck);
@@ -33,20 +38,26 @@ const CheckList = ({ name, idCheck, idCard, HandleChange }) => {
   function HandleChangelist() {
     setChangelist(!changelist);
   }
+
+  function HandleError(error) {
+    setError(error);
+  }
   return (
     <div>
+      {error && <Error error={error} HandleError={HandleError} />}
       <div className="checkbox-head">
         <h3>
           <AddTaskIcon /> {name}
         </h3>
         <button
           onClick={() => {
-            deleteChecklist(idCheck, HandleChange);
+            deleteChecklist(idCheck, HandleChange, HandleError);
           }}
         >
           X
         </button>
       </div>
+
       <div id="progres">
         <LinearProgress
           id="progress"
@@ -57,6 +68,7 @@ const CheckList = ({ name, idCheck, idCard, HandleChange }) => {
               : 0
           }
         />
+
         <div className="checklist-container">
           {checklist.map((data) => {
             return (
@@ -99,7 +111,12 @@ const CheckList = ({ name, idCheck, idCard, HandleChange }) => {
               <Button
                 onClick={() => {
                   setShow(!show);
-                  createchecktask(idCheck, text, HandleData);
+                  createchecktask(
+                    idCheck,
+                    text,
+                    HandleData,
+                    HandleError
+                  );
                   setText('');
                 }}
                 variant="contained"
@@ -123,59 +140,3 @@ const CheckList = ({ name, idCheck, idCard, HandleChange }) => {
 };
 
 export default CheckList;
-function getcheckItem(idCheck, HandleCheck) {
-  fetch(
-    `https://api.trello.com/1/checklists/${idCheck}?key=${Key}&token=${Token}`,
-    {
-      method: 'GET',
-    }
-  )
-    .then((response) => {
-      console.log(
-        `Response: ${response.status} ${response.statusText}`
-      );
-      return response.json();
-    })
-    .then((text) => {
-      HandleCheck(text);
-    })
-    .catch((err) => console.error(err));
-}
-
-function deleteChecklist(idCheck, HandleChange) {
-  fetch(
-    `https://api.trello.com/1/checklists/${idCheck}?key=${Key}&token=${Token}`,
-    {
-      method: 'DELETE',
-    }
-  )
-    .then((response) => {
-      console.log(
-        `Response: ${response.status} ${response.statusText}`
-      );
-      return response.text();
-    })
-    .then(() => {
-      HandleChange();
-    })
-    .catch((err) => console.error(err));
-}
-
-function createchecktask(idCheck, name, HandleData) {
-  fetch(
-    `https://api.trello.com/1/checklists/${idCheck}/checkItems?name=${name}&key=${Key}&token=${Token}`,
-    {
-      method: 'POST',
-    }
-  )
-    .then((response) => {
-      console.log(
-        `Response: ${response.status} ${response.statusText}`
-      );
-      return response.json();
-    })
-    .then((text) => {
-      HandleData(text);
-    })
-    .catch((err) => console.error(err));
-}

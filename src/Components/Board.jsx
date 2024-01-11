@@ -1,24 +1,17 @@
 /* eslint-disable react/no-unknown-property */
-import { useEffect, useState } from 'react';
-import get from './get';
+import { useContext } from 'react';
+
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Card from './Card';
 import './Board.css';
 import CreateBoard from './CreateBoard';
 import { Link } from 'react-router-dom';
+import { Loader } from './Loader';
+import { BoardsData } from '../App';
 export const Board = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    get(setData);
-  }, []);
-
+  let data = useContext(BoardsData);
   if (data.length == 0) {
-    return (
-      <div id="board-container">
-        <h3>Loading...</h3>
-      </div>
-    );
+    return <Loader />;
   }
   if (data.length != 0) {
     return (
@@ -41,22 +34,12 @@ export const Board = () => {
           <div className="sub-container">
             {data.map((board) => {
               return (
-                <Link
-                  key={board.id}
-                  to={
-                    '/board/' +
-                    board.id +
-                    `?name=${board.prefs.backgroundImage}&color=${
-                      board.prefs.backgroundColor
-                        ? board.prefs.backgroundBottomColor.slice(1)
-                        : null
-                    }`
-                  }
-                >
+                <Link key={board.id} to={'/board/' + board.id}>
                   <Card board={board} />
                 </Link>
               );
             })}
+
             {data.length < 10 && <CreateBoard length={data.length} />}
           </div>
         </div>

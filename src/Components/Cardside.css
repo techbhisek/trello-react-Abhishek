@@ -3,13 +3,12 @@
   width: 230px;
   font-weight: 600;
   color: white;
-
   box-sizing: border-box;
   border-radius: 4px;
   padding: 10px;
   color: white;
   text-align: center;
-  border: 1px solid white;
+  border: 1px solid rgb(108, 116, 119);
 }
 .board-cards > h4 {
   margin: 20px;

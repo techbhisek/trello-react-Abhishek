@@ -1,13 +1,23 @@
 /* eslint-disable react/prop-types */
 import Popover from '@mui/material/Popover';
 import './Tripledot.css';
+import { archiveList } from '../Api';
+import Error from './Error';
 
 import { useState } from 'react';
-import { Key } from '../assets/Key';
-import { Token } from '../assets/Token';
+import { archiveAllCards } from '../Api';
 
-export default function Tripledot({ idList, HandleArchive }) {
+export default function Tripledot({
+  idList,
+  HandleArchive,
+  HandleArchiveList,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [error, setError] = useState('');
+
+  function HandleError(error) {
+    setError(error);
+  }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,6 +32,7 @@ export default function Tripledot({ idList, HandleArchive }) {
 
   return (
     <div>
+      {error && <Error error={error} HandleError={HandleError} />}
       <h3
         aria-describedby={id}
         onClick={handleClick}
@@ -51,35 +62,24 @@ export default function Tripledot({ idList, HandleArchive }) {
           <h2 className="dot-main-heading">Action List</h2>
           <h3
             onClick={() => {
-              archiveAllCards(idList, HandleArchive);
+              archiveAllCards(idList, HandleArchive, HandleError);
               handleClose();
-              console.log('clicked');
             }}
             className="sub-heading"
           >
-            Archive this list
+            Archive all cards
+          </h3>
+          <h3
+            onClick={() => {
+              archiveList(idList, HandleArchiveList, HandleError);
+              handleClose();
+            }}
+            className="sub-heading"
+          >
+            Archive the List
           </h3>
         </div>
       </Popover>
     </div>
   );
-}
-
-function archiveAllCards(id, HandleArchive) {
-  fetch(
-    `https://api.trello.com/1/lists/${id}/archiveAllCards?key=${Key}&token=${Token}`,
-    {
-      method: 'POST',
-    }
-  )
-    .then((response) => {
-      console.log(
-        `Response: ${response.status} ${response.statusText}`
-      );
-      return response.text();
-    })
-    .then(() => {
-      return HandleArchive([]);
-    })
-    .catch((err) => console.error(err));
 }

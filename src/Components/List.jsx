@@ -1,42 +1,42 @@
-import { useEffect, useState } from 'react';
-import { Key } from '../assets/Key';
-import { Token } from '../assets/Token';
+import { useEffect, useState, useContext } from 'react';
 import './List.css';
 import { ListCards } from './ListCards';
 import { TextField, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import get from './get';
+import { CreateList, GetListInBoard } from '../Api';
+import { BoardsData } from '../App';
+import Error from './Error';
 
 export const List = () => {
   const [List, setList] = useState([]);
-  const [back, setBack] = useState([]);
   const [search, setSearch] = useState('');
   const [shower, setShower] = useState(false);
+  const [archive, setArchive] = useState(false);
+  const [error, setError] = useState('');
+
   let { id } = useParams();
 
-  useEffect(() => {
-    get(setBack);
+  let back = useContext(BoardsData);
 
-    fetch(
-      `https://api.trello.com/1/boards/${id}/lists?key=${Key}&token=${Token}`,
-      {
-        method: 'GET',
-      }
-    )
-      .then((response) => {
-        console.log(
-          `Response: ${response.status} ${response.statusText}`
-        );
-        return response.text();
-      })
-      .then((text) => setList(JSON.parse(text)))
-      .catch((err) => console.error(err));
-  }, [id]);
+  useEffect(() => {
+    GetListInBoard(id, HandleGetData);
+  }, [id, archive]);
+
+  function HandleGetData(data) {
+    setList(data);
+  }
 
   function HandleData(newData) {
     setList([...List, ...[newData]]);
   }
 
+  function HandleArchiveList() {
+    setArchive(!archive);
+    console.log(archive);
+  }
+  function HandleError(error) {
+    setError(error);
+  }
   if (back.length != 0) {
     let backer = back.filter((e) => e.id == id)[0];
 
@@ -50,14 +50,15 @@ export const List = () => {
         backgroundPosition: 'center',
       };
     }
-
     return (
       <div style={style} className="cont">
+        {error && <Error error={error} HandleError={HandleError} />}
         <h1 className="list-header">{backer.name}</h1>
         <div id="contain">
           {List.map((element) => {
             return (
               <ListCards
+                HandleArchiveList={HandleArchiveList}
                 key={element.id}
                 id={element.id}
                 name={element.name}
@@ -90,7 +91,7 @@ export const List = () => {
                 onClick={() => {
                   if (search) {
                     setSearch('');
-                    CreateList(search, id, HandleData);
+                    CreateList(search, id, HandleData, HandleError);
                     setShower(false);
                   }
                 }}
@@ -105,22 +106,3 @@ export const List = () => {
     );
   }
 };
-
-function CreateList(name, idBoard, HandleData) {
-  fetch(
-    `https://api.trello.com/1/lists?name=${name}&idBoard=${idBoard}&key=${Key}&token=${Token}`,
-    {
-      method: 'POST',
-    }
-  )
-    .then((response) => {
-      console.log(
-        `Response: ${response.status} ${response.statusText}`
-      );
-      return response.text();
-    })
-    .then((text) => {
-      return HandleData(JSON.parse(text));
-    })
-    .catch((err) => console.error(err));
-}

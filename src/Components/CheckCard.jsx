@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import { Key } from '../assets/Key';
-import { Token } from '../assets/Token';
+import { MarkCheckbox, DeleteItem } from '../Api';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import Error from './Error';
 
 const CheckCard = ({
   data,
@@ -14,26 +14,42 @@ const CheckCard = ({
   const [style, setStyle] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [status, setStatus] = useState(data.state);
+  const [error, setError] = useState('');
+
+  function HandleError(error) {
+    setError(error);
+  }
 
   return (
     <>
-      {' '}
+      {error && <Error error={error} HandleError={HandleError} />}{' '}
       <div className="check-box" key={data.id}>
         <div className="check">
           <input
-            defaultChecked={status == 'complete' ? true : false}
+            defaultChecked={data.state == 'complete' ? true : false}
             className="checkbox"
             type="checkbox"
             onChange={(e) => {
               if (e.target.checked) {
                 setStyle(() => 'overline');
-                MarkCheckbox(data.id, idCard, 'complete');
-                console.log(style);
+                setStatus('complete');
+                MarkCheckbox(
+                  data.id,
+                  idCard,
+                  'complete',
+                  HandleError
+                );
                 HandleValue(1);
               } else {
                 setStyle(() => '');
+                setStatus('incomplete');
+                MarkCheckbox(
+                  data.id,
+                  idCard,
+                  'incomplete',
+                  HandleError
+                );
                 HandleValue(-1);
-                MarkCheckbox(data.id, idCard, 'incomplete');
               }
             }}
             color="success"
@@ -45,7 +61,6 @@ const CheckCard = ({
           <RemoveCircleIcon
             onClick={() => {
               DeleteItem(data.id, idCheck, HandleChangelist);
-              console.log('ok');
             }}
             id="Del"
           />
@@ -56,40 +71,3 @@ const CheckCard = ({
 };
 
 export default CheckCard;
-
-function DeleteItem(id, idCheck, HandleChangelist) {
-  console.log(id, idCheck);
-  fetch(
-    `https://api.trello.com/1/checklists/${idCheck}/checkItems/${id}?key=${Key}&token=${Token}`,
-    {
-      method: 'DELETE',
-    }
-  )
-    .then((response) => {
-      console.log(
-        `Response: ${response.status} ${response.statusText}`
-      );
-      return response.text();
-    })
-    .then(() => {
-      HandleChangelist();
-    })
-    .catch((err) => console.error(err));
-}
-
-function MarkCheckbox(id, idCard, state) {
-  fetch(
-    `https://api.trello.com/1/cards/${idCard}/checkItem/${id}?key=${Key}&token=${Token}&state=${state}`,
-    {
-      method: 'PUT',
-    }
-  )
-    .then((response) => {
-      console.log(
-        `Response: ${response.status} ${response.statusText}`
-      );
-      return response.text();
-    })
-    .then((text) => console.log(text))
-    .catch((err) => console.error(err));
-}

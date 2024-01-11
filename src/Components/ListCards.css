@@ -130,3 +130,13 @@
 #button-add {
   width: 70%;
 }
+.card-text {
+  width: 90%;
+}
+.card-text:hover {
+  cursor: pointer;
+}
+
+#delete:hover {
+  cursor: pointer;
+}

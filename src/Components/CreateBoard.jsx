@@ -4,7 +4,7 @@ import './CreateBoard.css';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import push from './Push';
+import { push } from '../Api';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateBoard({ length }) {
@@ -49,6 +49,7 @@ export default function CreateBoard({ length }) {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
+          vertical: 'top',
           horizontal: 'left',
         }}
       >

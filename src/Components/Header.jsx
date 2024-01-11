@@ -5,17 +5,27 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import { Avatar } from '@mui/material';
-import { useParams, useLocation } from 'react-router-dom';
-const Header = () => {
-  const { id } = useParams();
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  // const name = searchParams.get('name');
-  const color = '#' + searchParams.get('color');
+import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
+import { BoardsData } from '../App';
 
-  let style;
-  if (color && id) {
-    style = { backgroundColor: color };
+const Header = () => {
+  let back = useContext(BoardsData);
+
+  let { id } = useParams();
+  let style = {};
+  let backer = '';
+  if (back) {
+    backer = back.filter((e) => e.id == id)[0];
+    if (backer) {
+      style = {
+        ...backer.prefs,
+
+        backgroundColor: backer.prefs.backgroundTopColor,
+        color: 'white',
+        border: '1px solid rgb(108,116,119)',
+      };
+    }
   }
   return (
     <header style={style}>
@@ -39,6 +49,7 @@ const Header = () => {
     </header>
   );
 };
+
 export default Header;
 
 const Search = styled('div')(({ theme }) => ({
