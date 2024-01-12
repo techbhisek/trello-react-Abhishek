@@ -2,6 +2,7 @@
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import { Button } from '@mui/material';
 import './CheckList.css';
+import { useReducer } from 'react';
 import { LinearProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Error from './Error';
@@ -13,35 +14,64 @@ import {
 import CheckCard from './CheckCard';
 const CheckList = ({ name, idCheck, idCard, HandleChange }) => {
   const [show, setShow] = useState(true);
-  const [checklist, setChecklist] = useState([]);
+  const [checklist, Checklist] = useReducer(HandleCheckItems, []);
   const [text, setText] = useState('');
-  const [value, setValue] = useState(0);
-  const [changelist, setChangelist] = useState(false);
+  const [value, setValue] = useReducer(HandleProgress, 0);
   const [error, setError] = useState('');
 
   useEffect(() => {
     getcheckItem(idCheck, HandleCheck);
-  }, [changelist]);
+  }, []);
+
+  function HandleProgress(value, action) {
+    switch (action.type) {
+      case 'complete':
+        return value + 1;
+
+      case 'incomplete':
+        return value - 1;
+
+      case 'set':
+        return action.value;
+    }
+  }
+
+  function HandleCheckItems(checklist, action) {
+    switch (action.type) {
+      case 'get':
+        return [...action.payload.checkItems];
+      case 'push':
+        return [...checklist, action.payload.task];
+      case 'delete': {
+        let data = checklist.filter(
+          (task) => task.id != action.payload.idCard
+        );
+        return data;
+      }
+    }
+  }
 
   function HandleCheck({ checkItems }) {
-    setChecklist(checkItems);
+    Checklist({ type: 'get', payload: { checkItems } });
   }
 
   function HandleValue(data) {
-    setValue((value) => value + data);
+    setValue({ type: data });
   }
 
   function HandleData(task) {
-    setChecklist([...checklist, task]);
+    Checklist({ type: 'push', payload: { task } });
   }
 
-  function HandleChangelist() {
-    setChangelist(!changelist);
+  function HandleChangelist(idCard) {
+    Checklist({ type: 'delete', payload: { idCard } });
+    setValue({ type: 'incomplete' });
   }
 
   function HandleError(error) {
     setError(error);
   }
+
   return (
     <div>
       {error && <Error error={error} HandleError={HandleError} />}
@@ -68,6 +98,7 @@ const CheckList = ({ name, idCheck, idCard, HandleChange }) => {
               : 0
           }
         />
+        {console.log(value)}
 
         <div className="checklist-container">
           {checklist.map((data) => {

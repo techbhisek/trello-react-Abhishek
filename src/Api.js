@@ -66,8 +66,8 @@ export const DeleteItem = (id, idCheck, HandleChangelist) => {
 
   axios
     .delete(url)
-    .then(({ data }) => {
-      HandleChangelist(data);
+    .then(() => {
+      HandleChangelist(id);
     })
     .catch(({ message }) => {
       console.log(message + ' unable to Delete Item');
@@ -110,7 +110,7 @@ export const deleteChecklist = (
   axios
     .delete(url)
     .then(() => {
-      HandleChange();
+      HandleChange(idCheck);
     })
     .catch(({ message }) => {
       HandleError(message + ' unable to delete checklist');

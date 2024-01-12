@@ -39,7 +39,7 @@ const CheckCard = ({
                   'complete',
                   HandleError
                 );
-                HandleValue(1);
+                HandleValue('complete');
               } else {
                 setStyle(() => '');
                 setStatus('incomplete');
@@ -49,7 +49,7 @@ const CheckCard = ({
                   'incomplete',
                   HandleError
                 );
-                HandleValue(-1);
+                HandleValue('incomplete');
               }
             }}
             color="success"

@@ -2,7 +2,7 @@
 import LaptopWindowsIcon from '@mui/icons-material/LaptopWindows';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import CheckList from './CheckList';
-import { useState } from 'react';
+import { useState, useReducer } from 'react';
 import { Button } from '@mui/material';
 import { useEffect } from 'react';
 import './CardClick.css';
@@ -10,24 +10,40 @@ import Error from './Error';
 import { getchecklist, Createchecklist } from '../Api';
 const CardClick = ({ name, idCard, setShowedit }) => {
   const [check, setCheckbox] = useState(false);
-  const [list, setlist] = useState([]);
+  const [list, Handlelist] = useReducer(checklister, []);
   const [text, setText] = useState('Checklist');
-  const [change, setChange] = useState(false);
+
+  function checklister(list, action) {
+    switch (action.type) {
+      case 'get':
+        return [...action.payload.list];
+      case 'push':
+        return [...list, action.payload.list];
+      case 'delete': {
+        let data = list.filter(
+          (check) => check.id != action.payload.list
+        );
+        return data;
+      }
+    }
+  }
 
   useEffect(() => {
     getchecklist(idCard, Handlechecklist, HandleError);
-  }, [change]);
+  }, []);
+
+  console.log(list);
 
   function Handlechecklist(data) {
-    setlist(data);
+    Handlelist({ type: 'get', payload: { list: data } });
   }
 
-  function HandleChange() {
-    setChange(!change);
+  function HandleChange(id) {
+    Handlelist({ type: 'delete', payload: { list: id } });
   }
 
   function HandleData(info) {
-    setlist(() => [...list, info]);
+    Handlelist({ type: 'push', payload: { list: info } });
   }
   const [error, setError] = useState('');
 
@@ -115,7 +131,6 @@ const CardClick = ({ name, idCard, setShowedit }) => {
               <AddTaskIcon />
               checkList
             </h3>
-            <h3 className="checklist"> Label</h3>
           </div>
         </div>
       </div>
