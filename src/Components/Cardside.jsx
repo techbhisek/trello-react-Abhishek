@@ -18,7 +18,7 @@ const Card = ({ board }) => {
   }
   
   return (
-    <div style = {{style}} className="board-container">
+    <div style = {style} className="board-container">
       <div
         onMouseOver={() => {
           setStar(!star);
