@@ -8,22 +8,23 @@ const Card = ({ board }) => {
     backgroundImage = board.prefs.backgroundImageScaled[2].url;
   }
   return (
-    <div
-      onMouseOver={() => {
-        setStar(!star);
-      }}
-      onMouseLeave={() => {
-        setStar(!star);
-      }}
-      className="board-cards"
-      style={{
-        ...board.prefs,
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'auto',
-        backgroundPosition: 'center',
-      }}
-    >
-      {board.name}
+    <div className="board-container">
+      <div
+        onMouseOver={() => {
+          setStar(!star);
+        }}
+        onMouseLeave={() => {
+          setStar(!star);
+        }}
+        className="board-cards"
+        style={{
+          ...board.prefs,
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'auto',
+          backgroundPosition: 'center',
+        }}
+      ></div>
+      <h3 className="Board">{board.name}</h3>
     </div>
   );
 };
