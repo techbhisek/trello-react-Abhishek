@@ -17,6 +17,7 @@ const Card = ({ board }) => {
       backgroundColor: 'rgba(255, 255, 255, 0.252)',
     };
   }
+
   return (
     <div style={style} className="board-container">
       <div
