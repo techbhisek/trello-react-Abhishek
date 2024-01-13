@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './Cardside.css';
 const Card = ({ board }) => {
   const [star, setStar] = useState(false);
@@ -7,8 +8,17 @@ const Card = ({ board }) => {
   if (board.prefs.backgroundImageScaled) {
     backgroundImage = board.prefs.backgroundImageScaled[2].url;
   }
+
+  let { id } = useParams();
+  let style = {};
+
+  if (id == board.id) {
+    style = {
+      backgroundColor: 'rgba(255, 255, 255, 0.252)',
+    };
+  }
   return (
-    <div className="board-container">
+    <div style={style} className="board-container">
       <div
         onMouseOver={() => {
           setStar(!star);
