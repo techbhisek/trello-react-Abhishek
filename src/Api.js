@@ -2,6 +2,21 @@ import axios from 'axios';
 import { Key } from './assets/Key';
 import { Token } from './assets/Token';
 
+let color = [
+  'blue',
+  'orange',
+  'green',
+  'red',
+  'purple',
+  'pink',
+  'lime',
+  'sky',
+  'grey',
+  'yellow',
+];
+
+let index = Number.parseInt(Math.random() * 10);
+
 export const get = (setHandler, HandleError) => {
   let id = '659827efbb4261b7392f75bd';
   let url = `https://api.trello.com/1/members/${id}/boards?key=${Key}&token=${Token}`;
@@ -16,7 +31,7 @@ export const get = (setHandler, HandleError) => {
 };
 
 export const push = (name, navigate, createboard) => {
-  let url = `https://api.trello.com/1/boards/?name=${name}&key=${Key}&token=${Token}`;
+  let url = `https://api.trello.com/1/boards/?name=${name}&key=${Key}&token=${Token}&prefs_background=${color[index]}`;
 
   axios
     .post(url)
