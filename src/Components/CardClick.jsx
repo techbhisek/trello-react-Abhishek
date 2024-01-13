@@ -115,7 +115,6 @@ const CardClick = ({ name, idCard, setShowedit }) => {
               <AddTaskIcon />
               checkList
             </h3>
-            <h3 className="checklist"> Label</h3>
           </div>
         </div>
       </div>
