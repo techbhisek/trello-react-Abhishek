@@ -7,6 +7,7 @@ import CardClick from './CardClick';
 import { Button } from '@mui/material';
 import { Deletecard, fetcherCreater, getCardsData } from '../Api';
 import Error from './Error';
+import { Success } from './Success';
 
 export const ListCards = ({ id, name, HandleArchiveList }) => {
   const [show, setShow] = useState(true);
@@ -20,6 +21,14 @@ export const ListCards = ({ id, name, HandleArchiveList }) => {
   const [archive, SetArchive] = useState(false);
   const [editcard, setEditcard] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  function HandleSuccess(data) {
+    setSuccess(data);
+    setTimeout(() => {
+      setSuccess('');
+    }, 3000);
+  }
 
   function HandleError(error) {
     setError(error);
@@ -47,8 +56,9 @@ export const ListCards = ({ id, name, HandleArchiveList }) => {
   // fetcher(id);
 
   return (
-    <div className="card">
+    <div style={{ overflowX: 'scroll' }} className="card">
       {error && <Error error={error} HandleError={HandleError} />}{' '}
+      {success && <Success success={success} />}
       {showedit && (
         <CardClick
           name={edit}
@@ -89,7 +99,12 @@ export const ListCards = ({ id, name, HandleArchiveList }) => {
               <ArchiveIcon
                 id="delete"
                 onClick={() => {
-                  Deletecard(element.id, HandleDelete, HandleError);
+                  Deletecard(
+                    element.id,
+                    HandleDelete,
+                    HandleError,
+                    HandleSuccess
+                  );
                 }}
               />
             )}
@@ -107,7 +122,13 @@ export const ListCards = ({ id, name, HandleArchiveList }) => {
           <Button
             id="button-add"
             onClick={() => {
-              fetcherCreater(id, text, HandleData, HandleError);
+              fetcherCreater(
+                id,
+                text,
+                HandleData,
+                HandleError,
+                HandleSuccess
+              );
               setText('');
               setShow(true);
             }}

@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { CreateList, GetListInBoard } from '../Api';
 import { BoardsData } from '../App';
 import Error from './Error';
+import { Success } from './Success';
 
 export const List = () => {
   const [List, setList] = useState([]);
@@ -13,6 +14,14 @@ export const List = () => {
   const [shower, setShower] = useState(false);
   const [archive, setArchive] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  function HandleSuccess(data) {
+    setSuccess(data);
+    setTimeout(() => {
+      setSuccess('');
+    }, 3000);
+  }
 
   let { id } = useParams();
 
@@ -53,6 +62,7 @@ export const List = () => {
     return (
       <div style={style} className="cont">
         {error && <Error error={error} HandleError={HandleError} />}
+        {success && <Success success={success} />}
         <h1 className="list-header">{backer.name}</h1>
         <div id="contain">
           {List.map((element) => {
@@ -91,7 +101,13 @@ export const List = () => {
                 onClick={() => {
                   if (search) {
                     setSearch('');
-                    CreateList(search, id, HandleData, HandleError);
+                    CreateList(
+                      search,
+                      id,
+                      HandleData,
+                      HandleError,
+                      HandleSuccess
+                    );
                     setShower(false);
                   }
                 }}

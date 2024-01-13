@@ -139,7 +139,8 @@ export const CreateList = (
   name,
   idBoard,
   HandleData,
-  HandleError
+  HandleError,
+  HandleSuccess
 ) => {
   const url = `https://api.trello.com/1/lists?name=${name}&idBoard=${idBoard}&key=${Key}&token=${Token}`;
 
@@ -147,6 +148,7 @@ export const CreateList = (
     .post(url)
     .then(({ data }) => {
       HandleData(data);
+      HandleSuccess('successfully created the list');
     })
     .catch(({ message }) => {
       console.log(message);
@@ -154,7 +156,13 @@ export const CreateList = (
     });
 };
 
-export const fetcherCreater = (id, text, HandleData, HandleError) => {
+export const fetcherCreater = (
+  id,
+  text,
+  HandleData,
+  HandleError,
+  HandleSuccess
+) => {
   const data = {
     idList: id,
     name: text,
@@ -166,19 +174,26 @@ export const fetcherCreater = (id, text, HandleData, HandleError) => {
     .post(url, data)
     .then(({ data }) => {
       HandleData(data);
+      HandleSuccess('Successfully created the card');
     })
     .catch(({ message }) => {
       HandleError(message + ' unable to fetch data');
     });
 };
 
-export const Deletecard = (id, HandleDelete, HandleError) => {
+export const Deletecard = (
+  id,
+  HandleDelete,
+  HandleError,
+  HandleSuccess
+) => {
   const url = `https://api.trello.com/1/cards/${id}?key=${Key}&token=${Token}`;
 
   axios
     .delete(url)
     .then(() => {
       HandleDelete();
+      HandleSuccess('Successfully deleted the card');
     })
     .catch(({ message }) => {
       HandleError(message + ' unable to Archive card');
