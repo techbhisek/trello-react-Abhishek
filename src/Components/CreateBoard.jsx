@@ -72,14 +72,21 @@ export default function CreateBoard({ length }) {
           </div>
 
           <Button
+            variant="contained"
+            disabled={text.length == 0}
             onClick={() => {
               setText('');
               push(text, navigate);
-
               open = Boolean(anchorEl);
             }}
           >
-            <Link to={link}> CREATE </Link>
+            <Link
+              style={{ textDecoration: 'none', color: 'White' }}
+              to={link}
+            >
+              {' '}
+              CREATE{' '}
+            </Link>
           </Button>
         </div>
       </Popover>
