@@ -15,12 +15,16 @@ export const get = (setHandler, HandleError) => {
     });
 };
 
-export const push = (name, navigate) => {
+export const push = (name, navigate, createboard) => {
   let url = `https://api.trello.com/1/boards/?name=${name}&key=${Key}&token=${Token}`;
 
   axios
     .post(url)
     .then(({ data }) => {
+      createboard(data);
+      return data;
+    })
+    .then((data) => {
       navigate(`/board/${data.id}`);
     })
     .catch(({ message }) => {

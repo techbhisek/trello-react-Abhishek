@@ -3,15 +3,17 @@ import Popover from '@mui/material/Popover';
 import './CreateBoard.css';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { push } from '../Api';
 import { useNavigate } from 'react-router-dom';
+import { ChangeData } from '../App';
 
 export default function CreateBoard({ length }) {
   const [text, setText] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const [link, setLink] = useState(undefined);
+  const createboard = useContext(ChangeData);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,7 +78,7 @@ export default function CreateBoard({ length }) {
             disabled={text.length == 0}
             onClick={() => {
               setText('');
-              push(text, navigate);
+              push(text, navigate, createboard);
               open = Boolean(anchorEl);
             }}
           >

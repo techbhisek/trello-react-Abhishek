@@ -50,12 +50,16 @@ export const List = () => {
     let backer = back.filter((e) => e.id == id)[0];
 
     let styleback = {};
-    if (backer.prefs.backgroundImage) {
-      styleback = {
-        backgroundImage: `url(${backer.prefs.backgroundImage})`,
-      };
+    if (backer.length != 0) {
+      if (backer?.prefs?.backgroundImage) {
+        styleback = {
+          backgroundImage: `url(${backer.prefs.backgroundImage})`,
+        };
+      } else {
+        styleback = { backgroundColor: backer.prefs.backgroundColor };
+      }
     } else {
-      styleback = { backgroundColor: backer.prefs.backgroundColor };
+      styleback = { backgroundColor: 'blue' };
     }
 
     return (
