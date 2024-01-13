@@ -7,8 +7,17 @@ const Card = ({ board }) => {
   if (board.prefs.backgroundImageScaled) {
     backgroundImage = board.prefs.backgroundImageScaled[2].url;
   }
+  let { id } = useParams();
+  let style = {};
+
+  if (id == board.id) {
+    style = {
+      backgroundColor: 'rgba(255, 255, 255, 0.252)',
+    };
+  }
+  
   return (
-    <div className="board-container">
+    <div style{{style}} className="board-container">
       <div
         onMouseOver={() => {
           setStar(!star);
