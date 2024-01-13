@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './Cardside.css';
 const Card = ({ board }) => {
   const [star, setStar] = useState(false);
