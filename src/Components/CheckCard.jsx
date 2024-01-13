@@ -26,6 +26,7 @@ const CheckCard = ({
       <div className="check-box" key={data.id}>
         <div className="check">
           <input
+            autoFocus
             defaultChecked={data.state == 'complete' ? true : false}
             className="checkbox"
             type="checkbox"

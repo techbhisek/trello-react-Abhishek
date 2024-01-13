@@ -49,18 +49,17 @@ export const List = () => {
   if (back.length != 0) {
     let backer = back.filter((e) => e.id == id)[0];
 
-    let style;
-    let { backgroundImage } = backer.prefs;
-    if (backer.length != 0) {
-      style = {
-        ...backer.prefs,
-        backgroundImage: `url(${backgroundImage})`,
-
-        backgroundPosition: 'center',
+    let styleback = {};
+    if (backer.prefs.backgroundImage) {
+      styleback = {
+        backgroundImage: `url(${backer.prefs.backgroundImage})`,
       };
+    } else {
+      styleback = { backgroundColor: backer.prefs.backgroundColor };
     }
+
     return (
-      <div style={style} className="cont">
+      <div style={styleback} className="cont">
         {error && <Error error={error} HandleError={HandleError} />}
         {success && <Success success={success} />}
         <h1 className="list-header">{backer.name}</h1>
@@ -90,6 +89,7 @@ export const List = () => {
             <div className="add-block">
               Add new card
               <TextField
+                autoFocus
                 id="outlined-basic"
                 onChange={(e) => {
                   setSearch(e.target.value);
@@ -97,24 +97,40 @@ export const List = () => {
                 label="Outlined"
                 variant="outlined"
               />
-              <Button
-                onClick={() => {
-                  if (search) {
-                    setSearch('');
-                    CreateList(
-                      search,
-                      id,
-                      HandleData,
-                      HandleError,
-                      HandleSuccess
-                    );
-                    setShower(false);
-                  }
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '80%',
                 }}
-                variant="contained"
               >
-                add-task
-              </Button>
+                <Button
+                  onClick={() => {
+                    if (search) {
+                      setSearch('');
+                      CreateList(
+                        search,
+                        id,
+                        HandleData,
+                        HandleError,
+                        HandleSuccess
+                      );
+                      setShower(false);
+                    }
+                  }}
+                  variant="contained"
+                >
+                  add-task
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShower(false);
+                  }}
+                  variant="out"
+                >
+                  X
+                </Button>
+              </div>
             </div>
           )}
         </div>

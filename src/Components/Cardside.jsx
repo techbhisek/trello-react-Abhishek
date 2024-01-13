@@ -4,9 +4,13 @@ import { useParams } from 'react-router-dom';
 import './Cardside.css';
 const Card = ({ board }) => {
   const [star, setStar] = useState(false);
-  let { backgroundImage } = board.prefs;
-  if (board.prefs.backgroundImageScaled) {
-    backgroundImage = board.prefs.backgroundImageScaled[2].url;
+  let styleback = {};
+  if (board.prefs.backgroundImage) {
+    styleback = {
+      backgroundImage: `url(${board.prefs.backgroundImage})`,
+    };
+  } else {
+    styleback = { backgroundColor: board.prefs.backgroundColor };
   }
 
   let { id } = useParams();
@@ -28,12 +32,7 @@ const Card = ({ board }) => {
           setStar(!star);
         }}
         className="board-cards"
-        style={{
-          ...board.prefs,
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'auto',
-          backgroundPosition: 'center',
-        }}
+        style={styleback}
       ></div>
       <h3 className="Board">{board.name}</h3>
     </div>

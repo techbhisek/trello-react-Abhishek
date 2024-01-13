@@ -4,9 +4,13 @@ import './Card.css';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 const Card = ({ board }) => {
   const [star, setStar] = useState(false);
-  let { backgroundImage } = board.prefs;
-  if (board.prefs.backgroundImageScaled) {
-    backgroundImage = board.prefs.backgroundImageScaled[2].url;
+  let style = {};
+  if (board.prefs.backgroundImage) {
+    style = {
+      backgroundImage: `url(${board.prefs.backgroundImage})`,
+    };
+  } else {
+    style = { backgroundColor: board.prefs.backgroundColor };
   }
   return (
     <div
@@ -17,12 +21,7 @@ const Card = ({ board }) => {
         setStar(!star);
       }}
       className="board-card"
-      style={{
-        ...board.prefs,
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'auto',
-        backgroundPosition: 'center',
-      }}
+      style={style}
     >
       <h4>{board.name}</h4>
       {star && <StarOutlineIcon className="star" />}

@@ -84,6 +84,9 @@
   justify-content: space-between;
   box-sizing: content-box;
 }
+.task:hover {
+  border: 2px solid rgb(36, 176, 228);
+}
 .name {
   display: flex;
   justify-content: space-between;
@@ -107,12 +110,13 @@
 }
 .whiter {
   width: 200px;
-  height: 20px;
-
+  height: fit-content;
   background-color: hsla(0, 0%, 98%, 0.247);
   color: white;
   padding: 20px;
-  margin: 25px;
+  margin: 20px;
+  margin-top: 10px;
+  box-sizing: border-box;
   font-weight: 700;
   border-radius: 5px;
 }

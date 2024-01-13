@@ -119,28 +119,47 @@ export const ListCards = ({ id, name, HandleArchiveList }) => {
             }}
             value={text}
           />{' '}
-          <Button
-            id="button-add"
-            onClick={() => {
-              fetcherCreater(
-                id,
-                text,
-                HandleData,
-                HandleError,
-                HandleSuccess
-              );
-              setText('');
-              setShow(true);
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '70%',
             }}
-            variant="contained"
           >
-            {' '}
-            Add +{' '}
-          </Button>
+            <Button
+              disabled={text.length == 0}
+              style={{ width: '100px' }}
+              id="button-add"
+              onClick={() => {
+                fetcherCreater(
+                  id,
+                  text,
+                  HandleData,
+                  HandleError,
+                  HandleSuccess
+                );
+                setText('');
+                setShow(true);
+              }}
+              variant="contained"
+            >
+              {' '}
+              Add +{' '}
+            </Button>
+
+            <Button
+              style={{ width: '50px' }}
+              variant="outlined"
+              onClick={() => setShow(true)}
+            >
+              X
+            </Button>
+          </div>
         </div>
       )}
       {show && (
-        <button
+        <Button
+          variant="outlined"
           onClick={() => {
             setShow(false);
           }}
@@ -148,7 +167,7 @@ export const ListCards = ({ id, name, HandleArchiveList }) => {
         >
           {' '}
           Add +{' '}
-        </button>
+        </Button>
       )}
     </div>
   );

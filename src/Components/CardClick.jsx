@@ -36,7 +36,7 @@ const CardClick = ({ name, idCard, setShowedit }) => {
   }
 
   return (
-    <div className="body-div">
+    <div style={{ zIndex: '5' }} className="body-div">
       {error && <Error error={error} HandleError={HandleError} />}
       {check && (
         <div className="create">
@@ -58,12 +58,14 @@ const CardClick = ({ name, idCard, setShowedit }) => {
             Title <br />
             <br />{' '}
             <textarea
+              autoFocus
               value={text}
               onChange={(e) => {
                 setText(e.target.value);
               }}
             />
           </div>
+
           <Button
             onClick={() => {
               setText('');

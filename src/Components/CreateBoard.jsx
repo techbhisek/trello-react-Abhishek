@@ -8,7 +8,7 @@ import { push } from '../Api';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateBoard({ length }) {
-  const [search, setSearch] = useState('');
+  const [text, setText] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const [link, setLink] = useState(undefined);
@@ -61,10 +61,11 @@ export default function CreateBoard({ length }) {
           <div className="input-bar">
             Name:{' '}
             <input
+              autoFocus
               placeholder="Name"
-              value={search}
+              value={text}
               onChange={(e) => {
-                setSearch(e.target.value);
+                setText(e.target.value);
               }}
               type="text"
             />
@@ -72,8 +73,8 @@ export default function CreateBoard({ length }) {
 
           <Button
             onClick={() => {
-              setSearch('');
-              push(search, navigate);
+              setText('');
+              push(text, navigate);
 
               open = Boolean(anchorEl);
             }}

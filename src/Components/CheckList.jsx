@@ -98,6 +98,7 @@ const CheckList = ({ name, idCheck, idCard, HandleChange }) => {
         {!show && (
           <div className="checktext-div">
             <textarea
+              autoFocus
               value={text}
               onChange={(e) => {
                 setText(e.target.value);
