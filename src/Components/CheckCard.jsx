@@ -62,6 +62,7 @@ const CheckCard = ({
           <RemoveCircleIcon
             onClick={() => {
               DeleteItem(data.id, idCheck, HandleChangelist);
+              HandleValue(-1);
             }}
             id="Del"
           />
