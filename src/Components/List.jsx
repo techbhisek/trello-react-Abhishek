@@ -1,15 +1,19 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import './List.css';
 import { ListCards } from './ListCards';
 import { TextField, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { CreateList, GetListInBoard } from '../Api';
-import { BoardsData } from '../App';
 import Error from './Error';
 import { Success } from './Success';
+import { useDispatch, useSelector } from 'react-redux';
+import { addList, getList } from '../Slices/ListSlice';
 
 export const List = () => {
-  const [List, setList] = useState([]);
+  const dispatch = useDispatch();
+  //const [List, setList] = useState([]);
+  const List = useSelector((state) => state.List.List);
+  // console.log(list1);
   const [search, setSearch] = useState('');
   const [shower, setShower] = useState(false);
   const [archive, setArchive] = useState(false);
@@ -25,23 +29,23 @@ export const List = () => {
 
   let { id } = useParams();
 
-  let back = useContext(BoardsData);
-
+  let back = useSelector((state) => state.Board.Boards);
   useEffect(() => {
     GetListInBoard(id, HandleGetData);
   }, [id, archive]);
 
   function HandleGetData(data) {
-    setList(data);
+    dispatch(getList(data));
+    // setList(data);
   }
 
   function HandleData(newData) {
-    setList([...List, ...[newData]]);
+    dispatch(addList(newData));
+    // setList([...List, ...[newData]]);
   }
 
   function HandleArchiveList() {
     setArchive(!archive);
-    console.log(archive);
   }
   function HandleError(error) {
     setError(error);

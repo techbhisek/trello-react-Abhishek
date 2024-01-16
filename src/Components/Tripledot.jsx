@@ -7,16 +7,21 @@ import Error from './Error';
 import { useState } from 'react';
 import { archiveAllCards } from '../Api';
 
-export default function Tripledot({
-  idList,
-  HandleArchive,
-  HandleArchiveList,
-}) {
+import { archiveAll } from '../Slices/ListofCards';
+import { useDispatch } from 'react-redux';
+
+export default function Tripledot({ idList, HandleArchiveList }) {
+  const dispatch = useDispatch();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState('');
 
   function HandleError(error) {
     setError(error);
+  }
+
+  function HandleArchive(idList) {
+    dispatch(archiveAll({ idList }));
   }
 
   const handleClick = (event) => {

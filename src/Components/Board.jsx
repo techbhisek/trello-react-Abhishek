@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unknown-property */
-import { useContext } from 'react';
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Card from './Card';
@@ -7,9 +6,11 @@ import './Board.css';
 import CreateBoard from './CreateBoard';
 import { Link } from 'react-router-dom';
 import { Loader } from './Loader';
-import { BoardsData } from '../App';
+import { useSelector } from 'react-redux';
+
 export const Board = () => {
-  let data = useContext(BoardsData);
+  let data = useSelector((state) => state.Board.Boards);
+
   if (data.length == 0) {
     return <Loader />;
   }

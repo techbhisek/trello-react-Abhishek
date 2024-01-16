@@ -3,23 +3,23 @@ import { useState } from 'react';
 import { MarkCheckbox, DeleteItem } from '../Api';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import Error from './Error';
+import { useDispatch } from 'react-redux';
+import { deleteCheckTask } from '../Slices/CheckTaskSlice';
 
-const CheckCard = ({
-  data,
-  idCheck,
-  idCard,
-  HandleValue,
-  HandleChangelist,
-}) => {
+const CheckCard = ({ data, idCheck, idCard, HandleValue }) => {
   const [style, setStyle] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [status, setStatus] = useState(data.state);
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   function HandleError(error) {
     setError(error);
   }
 
+  function HandleChangelist(id, idCheck) {
+    dispatch(deleteCheckTask({ id, idCheck }));
+  }
   return (
     <>
       {error && <Error error={error} HandleError={HandleError} />}{' '}

@@ -3,18 +3,21 @@ import Popover from '@mui/material/Popover';
 import './CreateBoard.css';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { push } from '../Api';
 import { useNavigate } from 'react-router-dom';
-import { ChangeData } from '../App';
+import { useDispatch } from 'react-redux';
+import { update } from '../Slices/BoardSlice';
 
 export default function CreateBoard({ length }) {
+  const dispatch = useDispatch();
   const [text, setText] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const [link, setLink] = useState(undefined);
-  const createboard = useContext(ChangeData);
-
+  function createboard(pushdata) {
+    dispatch(update(pushdata));
+  }
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

@@ -1,12 +1,12 @@
 /* eslint-disable react/no-unknown-property */
-import { useContext } from 'react';
 
+import { useSelector } from 'react-redux';
 import Cardside from './Cardside';
 import './Board.css';
 import { Link } from 'react-router-dom';
-import { BoardsData } from '../App';
+
 export const Navclick = () => {
-  let data = useContext(BoardsData);
+  let data = useSelector((state) => state.Board.Boards);
 
   if (data.length != 0) {
     return (

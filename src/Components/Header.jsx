@@ -5,13 +5,11 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import { Avatar } from '@mui/material';
-import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { BoardsData } from '../App';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
-  let back = useContext(BoardsData);
-
+  let back = useSelector((state) => state.Board.Boards);
   let { id } = useParams();
   let style = {};
   let backer = '';

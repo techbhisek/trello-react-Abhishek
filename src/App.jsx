@@ -1,7 +1,7 @@
 import './App.css';
 import Header from './Components/Header';
 import { get } from './Api';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect } from 'react';
 
 import Sidenavbar from './Components/Sidenavbar';
 import {
@@ -14,56 +14,48 @@ export const BoardsData = createContext([]);
 export const ChangeData = createContext([]);
 import { Board } from './Components/Board';
 import { List } from './Components/List';
+import { useDispatch } from 'react-redux';
+import { getdata } from './Slices/BoardSlice';
 function App() {
-  const [data, setData] = useState([]);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     get(HandleData);
   }, []);
   function HandleData(array) {
-    setData(array);
-  }
-
-  function createboard(pushdata) {
-    setData([...data, pushdata]);
-    console.log(data);
+    dispatch(getdata(array));
   }
   return (
     <>
-      <ChangeData.Provider value={createboard}>
-        <BoardsData.Provider value={data}>
-          <div>
-            <Router>
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <div>
-                      <Header />
-                      <div id="main">
-                        <Sidenavbar state={false} />
-                        <Board />
-                      </div>
-                    </div>
-                  }
-                />
-                <Route
-                  path="/board/:id"
-                  element={
-                    <div>
-                      <Header />
-                      <div id="main">
-                        <Sidenavbar state={true} />
-                        <List />
-                      </div>
-                    </div>
-                  }
-                />
-              </Routes>
-            </Router>
-          </div>
-        </BoardsData.Provider>
-      </ChangeData.Provider>
+      <div>
+        <Router>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <div>
+                  <Header />
+                  <div id="main">
+                    <Sidenavbar state={false} />
+                    <Board />
+                  </div>
+                </div>
+              }
+            />
+            <Route
+              path="/board/:id"
+              element={
+                <div>
+                  <Header />
+                  <div id="main">
+                    <Sidenavbar state={true} />
+                    <List />
+                  </div>
+                </div>
+              }
+            />
+          </Routes>
+        </Router>
+      </div>
     </>
   );
 }

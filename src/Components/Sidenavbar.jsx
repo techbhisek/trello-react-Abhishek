@@ -7,13 +7,12 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Navclick } from './Navclick';
-import { BoardsData } from '../App';
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import './Sidenavbar.css';
 
 export default function Sidenavbar({ state }) {
-  let back = useContext(BoardsData);
+  let back = useSelector((state) => state.Board.Boards);
 
   let { id } = useParams();
   let style = {};

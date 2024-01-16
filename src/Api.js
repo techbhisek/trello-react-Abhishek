@@ -17,7 +17,7 @@ let color = [
 
 let index = Number.parseInt(Math.random() * 10);
 
-export const get = (setHandler, HandleError) => {
+export const get = (setHandler) => {
   let id = '659827efbb4261b7392f75bd';
   let url = `https://api.trello.com/1/members/${id}/boards?key=${Key}&token=${Token}`;
   axios
@@ -25,9 +25,7 @@ export const get = (setHandler, HandleError) => {
     .then(({ data }) => {
       setHandler(data);
     })
-    .catch(({ message }) => {
-      HandleError(message);
-    });
+    .catch(() => {});
 };
 
 export const push = (name, navigate, createboard) => {
@@ -85,8 +83,8 @@ export const DeleteItem = (id, idCheck, HandleChangelist) => {
 
   axios
     .delete(url)
-    .then(({ data }) => {
-      HandleChangelist(data);
+    .then(() => {
+      HandleChangelist(id, idCheck);
     })
     .catch(({ message }) => {
       console.log(message + ' unable to Delete Item');
@@ -112,7 +110,7 @@ export const getcheckItem = (idCheck, HandleCheck) => {
   axios
     .get(url)
     .then(({ data }) => {
-      HandleCheck(data);
+      HandleCheck(idCheck, data);
     })
     .catch(({ message }) => {
       console.log(message + ' unable to fetch checkitem');
@@ -129,7 +127,7 @@ export const deleteChecklist = (
   axios
     .delete(url)
     .then(() => {
-      HandleChange();
+      HandleChange(idCheck);
     })
     .catch(({ message }) => {
       HandleError(message + ' unable to delete checklist');
@@ -211,7 +209,7 @@ export const Deletecard = (
   axios
     .delete(url)
     .then(() => {
-      HandleDelete();
+      HandleDelete(id);
       HandleSuccess('Successfully deleted the card');
     })
     .catch(({ message }) => {
@@ -225,7 +223,7 @@ export const archiveAllCards = (id, HandleArchive, HandleError) => {
   axios
     .post(url)
     .then(() => {
-      HandleArchive([]);
+      HandleArchive(id);
     })
     .catch(({ message }) => {
       HandleError(message + ' unable to archive all cards');

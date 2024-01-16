@@ -8,26 +8,28 @@ import { useEffect } from 'react';
 import './CardClick.css';
 import Error from './Error';
 import { getchecklist, Createchecklist } from '../Api';
+import { useSelector, useDispatch } from 'react-redux';
+import { addCheckList, getCheckList } from '../Slices/checkListSlice';
 const CardClick = ({ name, idCard, setShowedit }) => {
   const [check, setCheckbox] = useState(false);
-  const [list, setlist] = useState([]);
   const [text, setText] = useState('Checklist');
-  const [change, setChange] = useState(false);
+
+  const List = useSelector((state) => state.CheckList.checkList);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getchecklist(idCard, Handlechecklist, HandleError);
-  }, [change]);
+  }, [idCard]);
 
   function Handlechecklist(data) {
-    setlist(data);
-  }
+    //setlist(data);
 
-  function HandleChange() {
-    setChange(!change);
+    dispatch(getCheckList(data));
   }
 
   function HandleData(info) {
-    setlist(() => [...list, info]);
+    // setlist(() => [...list, info]);
+    dispatch(addCheckList(info));
   }
   const [error, setError] = useState('');
 
@@ -95,9 +97,8 @@ const CardClick = ({ name, idCard, setShowedit }) => {
         </div>
         <div className="div-container">
           <div className="Left">
-            {list.map((name) => (
+            {List.map((name) => (
               <CheckList
-                HandleChange={HandleChange}
                 name={name.name}
                 idCheck={name.id}
                 idCard={idCard}

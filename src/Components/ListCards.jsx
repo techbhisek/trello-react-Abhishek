@@ -8,17 +8,26 @@ import { Button } from '@mui/material';
 import { Deletecard, fetcherCreater, getCardsData } from '../Api';
 import Error from './Error';
 import { Success } from './Success';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addCards,
+  deleteCards,
+  getCards,
+} from '../Slices/ListofCards';
 
 export const ListCards = ({ id, name, HandleArchiveList }) => {
   const [show, setShow] = useState(true);
   const [text, setText] = useState('');
-  const [cards, setCards] = useState([]);
+  //const [cards, setCards] = useState([]);
   const [deletecard, setDeletecard] = useState(true);
+
+  let cards = useSelector((state) => state.ListofCards.ListofCards);
+
+  const dispatch = useDispatch();
 
   const [edit, setEdit] = useState('');
   const [idCard, setIdcard] = useState('');
   const [showedit, setShowedit] = useState(false);
-  const [archive, SetArchive] = useState(false);
   const [editcard, setEditcard] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -36,139 +45,143 @@ export const ListCards = ({ id, name, HandleArchiveList }) => {
 
   useEffect(() => {
     getCardsData(id, HandleCardsData);
-  }, [archive, deletecard]);
-
-  function HandleArchive(state) {
-    SetArchive([...state]);
-  }
+  }, []);
 
   function HandleData(newCard) {
-    setCards([...cards, ...[newCard]]);
+    // setCards([...cards, ...[newCard]]);
+
+    dispatch(addCards({ id: id, newCard: newCard }));
   }
 
-  function HandleDelete() {
+  function HandleDelete(idCard) {
+    dispatch(deleteCards({ idList: id, idCard }));
     setDeletecard(!deletecard);
   }
 
   function HandleCardsData(data) {
-    setCards(data);
-  }
-  // fetcher(id);
+    //  setCards(data);
 
-  return (
-    <div style={{ overflowX: 'scroll' }} className="card">
-      {error && <Error error={error} HandleError={HandleError} />}{' '}
-      {success && <Success success={success} />}
-      {showedit && (
-        <CardClick
-          name={edit}
-          idCard={idCard}
-          setShowedit={setShowedit}
-        />
-      )}
-      <div className="name">
-        <h3>{name}</h3>{' '}
-        <Tripledot
-          HandleArchive={HandleArchive}
-          HandleArchiveList={HandleArchiveList}
-          idList={id}
-        />
-      </div>
-      {cards.map((element) => {
-        return (
-          <div className="task" key={element.id}>
-            <p
-              className="card-text"
-              onMouseEnter={() => {
-                setEditcard(!editcard);
+    data = data.length != 0 ? data : [];
+    dispatch(getCards({ id: id, ListofCards: data }));
+  }
+
+  // fetcher(id);
+  if (Object.keys(cards).length != 0) {
+    return (
+      <div style={{ overflowX: 'scroll' }} className="card">
+        {error && <Error error={error} HandleError={HandleError} />}{' '}
+        {success && <Success success={success} />}
+        {showedit && (
+          <CardClick
+            name={edit}
+            idCard={idCard}
+            setShowedit={setShowedit}
+          />
+        )}
+        <div className="name">
+          <h3>{name}</h3>{' '}
+          <Tripledot
+            HandleArchiveList={HandleArchiveList}
+            idList={id}
+          />
+        </div>
+        {cards[id] &&
+          cards[id].map((element) => {
+            return (
+              <div className="task" key={element.id}>
+                <p
+                  className="card-text"
+                  onMouseEnter={() => {
+                    setEditcard(!editcard);
+                  }}
+                  onMouseLeave={() => {
+                    setEditcard(!editcard);
+                  }}
+                  draggable="true"
+                  onClick={() => {
+                    setShowedit(true);
+                    setEdit(element.name);
+                    setIdcard(element.id);
+                  }}
+                  key={element.id}
+                >
+                  {element.name}{' '}
+                </p>
+                {true && (
+                  <ArchiveIcon
+                    id="delete"
+                    onClick={() => {
+                      Deletecard(
+                        element.id,
+                        HandleDelete,
+                        HandleError,
+                        HandleSuccess
+                      );
+                    }}
+                  />
+                )}
+              </div>
+            );
+          })}
+        {!show && (
+          <div className="Addcard">
+            <textarea
+              onChange={(e) => {
+                setText(e.target.value);
               }}
-              onMouseLeave={() => {
-                setEditcard(!editcard);
+              value={text}
+            />{' '}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '70%',
               }}
-              draggable="true"
-              onClick={() => {
-                setShowedit(true);
-                setEdit(element.name);
-                setIdcard(element.id);
-              }}
-              key={element.id}
             >
-              {element.name}{' '}
-            </p>
-            {true && (
-              <ArchiveIcon
-                id="delete"
+              <Button
+                disabled={text.length == 0}
+                style={{ width: '100px' }}
+                id="button-add"
                 onClick={() => {
-                  Deletecard(
-                    element.id,
-                    HandleDelete,
+                  fetcherCreater(
+                    id,
+                    text,
+                    HandleData,
                     HandleError,
                     HandleSuccess
                   );
+                  setText('');
+                  setShow(true);
                 }}
-              />
-            )}
-          </div>
-        );
-      })}
-      {!show && (
-        <div className="Addcard">
-          <textarea
-            onChange={(e) => {
-              setText(e.target.value);
-            }}
-            value={text}
-          />{' '}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: '70%',
-            }}
-          >
-            <Button
-              disabled={text.length == 0}
-              style={{ width: '100px' }}
-              id="button-add"
-              onClick={() => {
-                fetcherCreater(
-                  id,
-                  text,
-                  HandleData,
-                  HandleError,
-                  HandleSuccess
-                );
-                setText('');
-                setShow(true);
-              }}
-              variant="contained"
-            >
-              {' '}
-              Add +{' '}
-            </Button>
+                variant="contained"
+              >
+                {' '}
+                Add +{' '}
+              </Button>
 
-            <Button
-              style={{ width: '50px' }}
-              variant="outlined"
-              onClick={() => setShow(true)}
-            >
-              X
-            </Button>
+              <Button
+                style={{ width: '50px' }}
+                variant="outlined"
+                onClick={() => setShow(true)}
+              >
+                X
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
-      {show && (
-        <Button
-          variant="outlined"
-          onClick={() => {
-            setShow(false);
-          }}
-          type="text"
-        >
-          {' '}
-          Add +{' '}
-        </Button>
-      )}
-    </div>
-  );
+        )}
+        {show && (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setShow(false);
+            }}
+            type="text"
+          >
+            {' '}
+            Add +{' '}
+          </Button>
+        )}
+      </div>
+    );
+  }
 };
