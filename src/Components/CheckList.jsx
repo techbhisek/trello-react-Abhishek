@@ -29,11 +29,13 @@ const CheckList = ({ name, idCheck, idCard }) => {
   }
   useEffect(() => {
     getcheckItem(idCheck, HandleCheck);
+
+    return () => {
+      dispatch(getCheckTask({ id: idCheck, data: [] }));
+    };
   }, [idCheck]);
 
   function HandleCheck(idCheck, { checkItems }) {
-    console.log(checkItems);
-
     dispatch(getCheckTask({ id: idCheck, data: checkItems }));
   }
 
@@ -76,13 +78,13 @@ const CheckList = ({ name, idCheck, idCard }) => {
             variant="determinate"
             value={
               CheckTask.length > 0
-                ? (value / CheckTask.length) * 100
+                ? (value / CheckTask[idCheck].length) * 100
                 : 0
             }
           />
 
           <div className="checklist-container">
-            {CheckTask &&
+            {CheckTask[idCheck] &&
               CheckTask[idCheck].map((data) => {
                 return (
                   <CheckCard

@@ -14,9 +14,6 @@ const CheckTaskSlice = createSlice({
       console.log(state.CheckTask);
     },
     addCheckTask: (state, action) => {
-      console.log(
-        action.payload.id + '=>' + JSON.stringify(action.payload.data)
-      );
       state.CheckTask = {
         ...state.CheckTask,
         [action.payload.id]: [

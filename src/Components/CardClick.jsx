@@ -19,7 +19,10 @@ const CardClick = ({ name, idCard, setShowedit }) => {
 
   useEffect(() => {
     getchecklist(idCard, Handlechecklist, HandleError);
-  }, [idCard]);
+    return () => {
+      dispatch(getCheckList([]));
+    };
+  }, []);
 
   function Handlechecklist(data) {
     //setlist(data);
@@ -37,6 +40,7 @@ const CardClick = ({ name, idCard, setShowedit }) => {
     setError(error);
   }
 
+  //if (List.length != 0) {
   return (
     <div style={{ zIndex: '5' }} className="body-div">
       {error && <Error error={error} HandleError={HandleError} />}
@@ -123,6 +127,7 @@ const CardClick = ({ name, idCard, setShowedit }) => {
       </div>
     </div>
   );
+  // }
 };
 
 export default CardClick;
