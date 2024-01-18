@@ -8,8 +8,6 @@ const checkListSlice = createSlice({
   reducers: {
     getCheckList: (state, action) => {
       state.checkList = [...action.payload];
-
-      console.log(state.checkList);
     },
     addCheckList: (state, action) => {
       state.checkList = [...state.checkList, action.payload];
