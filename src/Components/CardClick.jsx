@@ -8,8 +8,12 @@ import { useEffect } from 'react';
 import './CardClick.css';
 import Error from './Error';
 import { getchecklist, Createchecklist } from '../Api';
+import { add } from '../Slices/ProgressSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { addCheckList, getCheckList } from '../Slices/checkListSlice';
+import { reset } from '../Slices/ProgressSlice';
+import { error, success } from '../Slices/HandleSlice';
+
 const CardClick = ({ name, idCard, setShowedit }) => {
   const [check, setCheckbox] = useState(false);
   const [text, setText] = useState('Checklist');
@@ -21,11 +25,14 @@ const CardClick = ({ name, idCard, setShowedit }) => {
     getchecklist(idCard, Handlechecklist, HandleError);
     return () => {
       dispatch(getCheckList([]));
+      dispatch(reset());
     };
   }, []);
 
   function Handlechecklist(data) {
-    //setlist(data);
+    data.map((checklist) => {
+      dispatch(add({ id: checklist.id }));
+    });
 
     dispatch(getCheckList(data));
   }
@@ -34,16 +41,21 @@ const CardClick = ({ name, idCard, setShowedit }) => {
     // setlist(() => [...list, info]);
     dispatch(addCheckList(info));
   }
-  const [error, setError] = useState('');
 
-  function HandleError(error) {
-    setError(error);
+  function HandleError(errormessage) {
+    dispatch(error({ message: errormessage }));
+  }
+  function HandleSuccess(data) {
+    dispatch(success({ message: data }));
+    setTimeout(() => {
+      dispatch(success({ message: '' }));
+    }, 3000);
   }
 
   //if (List.length != 0) {
   return (
     <div style={{ zIndex: '5' }} className="body-div">
-      {error && <Error error={error} HandleError={HandleError} />}
+      <Error HandleError={HandleError} />
       {check && (
         <div className="create">
           <div className="Checkpop">
@@ -76,7 +88,13 @@ const CardClick = ({ name, idCard, setShowedit }) => {
             onClick={() => {
               setText('');
               setCheckbox(!check);
-              Createchecklist(idCard, text, HandleData, HandleError);
+              Createchecklist(
+                idCard,
+                text,
+                HandleData,
+                HandleError,
+                HandleSuccess
+              );
             }}
             variant="contained"
           >
@@ -101,14 +119,16 @@ const CardClick = ({ name, idCard, setShowedit }) => {
         </div>
         <div className="div-container">
           <div className="Left">
-            {List.map((name) => (
-              <CheckList
-                name={name.name}
-                idCheck={name.id}
-                idCard={idCard}
-                key={name.id}
-              />
-            ))}
+            {List.map((name) => {
+              return (
+                <CheckList
+                  name={name.name}
+                  idCheck={name.id}
+                  idCard={idCard}
+                  key={name.id}
+                />
+              );
+            })}
           </div>
           <div className="Right">
             Add to card

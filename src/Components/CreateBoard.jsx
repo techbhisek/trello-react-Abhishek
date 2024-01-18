@@ -8,6 +8,7 @@ import { push } from '../Api';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { update } from '../Slices/BoardSlice';
+import { error } from '../Slices/HandleSlice';
 
 export default function CreateBoard({ length }) {
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ export default function CreateBoard({ length }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  function HandleError(errormessage) {
+    dispatch(error({ message: errormessage }));
+  }
   const navigate = useNavigate();
   let open = Boolean(anchorEl);
   let id = open ? 'simple-popover' : undefined;
@@ -81,7 +86,7 @@ export default function CreateBoard({ length }) {
             disabled={text.length == 0}
             onClick={() => {
               setText('');
-              push(text, navigate, createboard);
+              push(text, navigate, createboard, HandleError);
               open = Boolean(anchorEl);
             }}
           >

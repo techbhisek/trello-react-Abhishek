@@ -17,7 +17,7 @@ let color = [
 
 let index = Number.parseInt(Math.random() * 10);
 
-export const get = (setHandler) => {
+export const get = (setHandler, HandleError) => {
   let id = '659827efbb4261b7392f75bd';
   let url = `https://api.trello.com/1/members/${id}/boards?key=${Key}&token=${Token}`;
   axios
@@ -25,10 +25,12 @@ export const get = (setHandler) => {
     .then(({ data }) => {
       setHandler(data);
     })
-    .catch(() => {});
+    .catch(({ message }) => {
+      HandleError(message + 'Something went wrong');
+    });
 };
 
-export const push = (name, navigate, createboard) => {
+export const push = (name, navigate, createboard, HandleError) => {
   let url = `https://api.trello.com/1/boards/?name=${name}&key=${Key}&token=${Token}&prefs_background=${color[index]}`;
 
   axios
@@ -41,7 +43,7 @@ export const push = (name, navigate, createboard) => {
       navigate(`/board/${data.id}`);
     })
     .catch(({ message }) => {
-      console.log(message + ' Not able to create new Board');
+      HandleError(message + ' Not able to create new Board');
     });
 };
 
@@ -49,13 +51,15 @@ export const Createchecklist = (
   idCard,
   name,
   HandleData,
-  HandleError
+  HandleError,
+  HandleSuccess
 ) => {
   const url = `https://api.trello.com/1/checklists?idCard=${idCard}&key=${Key}&token=${Token}&name=${name}`;
   axios
     .post(url)
     .then(({ data }) => {
       HandleData(data);
+      HandleSuccess('Successfullt created the Checklist');
     })
     .catch(({ message }) => {
       HandleError(message + ' Not able to create new Checklist');
@@ -78,26 +82,38 @@ export const getchecklist = (
     });
 };
 
-export const DeleteItem = (id, idCheck, HandleChangelist) => {
+export const DeleteItem = (
+  id,
+  idCheck,
+  HandleChangelist,
+  HandleSuccess
+) => {
   const url = `https://api.trello.com/1/checklists/${idCheck}/checkItems/${id}?key=${Key}&token=${Token}`;
 
   axios
     .delete(url)
     .then(() => {
       HandleChangelist(id, idCheck);
+      HandleSuccess('Successfullt Deleted checkTask');
     })
     .catch(({ message }) => {
       console.log(message + ' unable to Delete Item');
     });
 };
 
-export const MarkCheckbox = (id, idCard, state, HandleError) => {
+export const MarkCheckbox = (
+  id,
+  idCard,
+  state,
+  HandleError,
+  HandleSuccess
+) => {
   const url = `https://api.trello.com/1/cards/${idCard}/checkItem/${id}?key=${Key}&token=${Token}&state=${state}`;
 
   axios
     .put(url)
     .then(() => {
-      console.log('successful');
+      HandleSuccess('successful check marked as ' + state);
     })
     .catch(({ message }) => {
       HandleError(message + ' unable to update ');
@@ -120,7 +136,8 @@ export const getcheckItem = (idCheck, HandleCheck) => {
 export const deleteChecklist = (
   idCheck,
   HandleChange,
-  HandleError
+  HandleError,
+  HandleSuccess
 ) => {
   const url = `https://api.trello.com/1/checklists/${idCheck}?key=${Key}&token=${Token}`;
 
@@ -128,6 +145,9 @@ export const deleteChecklist = (
     .delete(url)
     .then(() => {
       HandleChange(idCheck);
+    })
+    .then(() => {
+      HandleSuccess('Successfully deleted the checklist');
     })
     .catch(({ message }) => {
       HandleError(message + ' unable to delete checklist');

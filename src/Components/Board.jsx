@@ -7,10 +7,37 @@ import CreateBoard from './CreateBoard';
 import { Link } from 'react-router-dom';
 import { Loader } from './Loader';
 import { useSelector } from 'react-redux';
+import { Button } from '@mui/material';
 
 export const Board = () => {
   let data = useSelector((state) => state.Board.Boards);
+  const fetcherror = useSelector((state) => state.Handle.fetcherror);
 
+  if (fetcherror) {
+    return (
+      <div style={{ width: '100%' }}>
+        <div style={{ margin: '100px 0px 0px  300px' }}>
+          <h1
+            style={{
+              fontSize: '50px',
+              fontWeight: '700',
+            }}
+          >
+            Sorry Not able to fetch Data
+          </h1>
+        </div>
+        <Link style={{ textDecoration: 'none' }} to="/">
+          {' '}
+          <Button
+            style={{ margin: '50px 500px' }}
+            variant="contained"
+          >
+            Try again
+          </Button>
+        </Link>
+      </div>
+    );
+  }
   if (data.length == 0) {
     return <Loader />;
   }

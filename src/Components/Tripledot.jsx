@@ -2,11 +2,9 @@
 import Popover from '@mui/material/Popover';
 import './Tripledot.css';
 import { archiveList } from '../Api';
-import Error from './Error';
-
+import { error } from '../Slices/HandleSlice';
 import { useState } from 'react';
 import { archiveAllCards } from '../Api';
-
 import { archiveAll } from '../Slices/ListofCards';
 import { useDispatch } from 'react-redux';
 
@@ -14,10 +12,9 @@ export default function Tripledot({ idList, HandleArchiveList }) {
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [error, setError] = useState('');
 
-  function HandleError(error) {
-    setError(error);
+  function HandleError(errormessage) {
+    dispatch(error({ message: errormessage }));
   }
 
   function HandleArchive(idList) {
@@ -37,7 +34,6 @@ export default function Tripledot({ idList, HandleArchiveList }) {
 
   return (
     <div>
-      {error && <Error error={error} HandleError={HandleError} />}
       <h3
         aria-describedby={id}
         onClick={handleClick}

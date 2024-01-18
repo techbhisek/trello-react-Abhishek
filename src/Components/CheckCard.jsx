@@ -2,27 +2,38 @@
 import { useState } from 'react';
 import { MarkCheckbox, DeleteItem } from '../Api';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import Error from './Error';
+import { success } from '../Slices/HandleSlice';
+
+import { error } from '../Slices/HandleSlice';
+
 import { useDispatch } from 'react-redux';
 import { deleteCheckTask } from '../Slices/CheckTaskSlice';
-
-const CheckCard = ({ data, idCheck, idCard, HandleValue }) => {
+import { checked, unchecked } from '../Slices/ProgressSlice';
+const CheckCard = ({ data, idCheck, idCard }) => {
   const [style, setStyle] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [status, setStatus] = useState(data.state);
-  const [error, setError] = useState('');
   const dispatch = useDispatch();
 
-  function HandleError(error) {
-    setError(error);
+  function HandleError(errormessage) {
+    dispatch(error({ message: errormessage }));
+  }
+  function HandleSuccess(data) {
+    dispatch(success({ message: data }));
+    setTimeout(() => {
+      dispatch(success({ message: '' }));
+    }, 3000);
   }
 
   function HandleChangelist(id, idCheck) {
+    if (status == 'complete') {
+      dispatch(unchecked({ id: idCheck }));
+    }
+
     dispatch(deleteCheckTask({ id, idCheck }));
   }
   return (
     <>
-      {error && <Error error={error} HandleError={HandleError} />}{' '}
       <div className="check-box" key={data.id}>
         <div className="check">
           <input
@@ -38,9 +49,10 @@ const CheckCard = ({ data, idCheck, idCard, HandleValue }) => {
                   data.id,
                   idCard,
                   'complete',
-                  HandleError
+                  HandleError,
+                  HandleSuccess
                 );
-                HandleValue(1);
+                dispatch(checked({ id: idCheck }));
               } else {
                 setStyle(() => '');
                 setStatus('incomplete');
@@ -48,9 +60,10 @@ const CheckCard = ({ data, idCheck, idCard, HandleValue }) => {
                   data.id,
                   idCard,
                   'incomplete',
-                  HandleError
+                  HandleError,
+                  HandleSuccess
                 );
-                HandleValue(-1);
+                dispatch(unchecked({ id: idCheck }));
               }
             }}
             color="success"
@@ -61,8 +74,12 @@ const CheckCard = ({ data, idCheck, idCard, HandleValue }) => {
           {' '}
           <RemoveCircleIcon
             onClick={() => {
-              DeleteItem(data.id, idCheck, HandleChangelist);
-              HandleValue(-1);
+              DeleteItem(
+                data.id,
+                idCheck,
+                HandleChangelist,
+                HandleSuccess
+              );
             }}
             id="Del"
           />

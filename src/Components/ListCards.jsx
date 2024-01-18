@@ -6,14 +6,15 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import CardClick from './CardClick';
 import { Button } from '@mui/material';
 import { Deletecard, fetcherCreater, getCardsData } from '../Api';
-import Error from './Error';
 import { Success } from './Success';
+import { success } from '../Slices/HandleSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addCards,
   deleteCards,
   getCards,
 } from '../Slices/ListofCards';
+import { error } from '../Slices/HandleSlice';
 
 export const ListCards = ({ id, name, HandleArchiveList }) => {
   const [show, setShow] = useState(true);
@@ -29,18 +30,16 @@ export const ListCards = ({ id, name, HandleArchiveList }) => {
   const [idCard, setIdcard] = useState('');
   const [showedit, setShowedit] = useState(false);
   const [editcard, setEditcard] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   function HandleSuccess(data) {
-    setSuccess(data);
+    dispatch(success({ message: data }));
     setTimeout(() => {
-      setSuccess('');
+      dispatch(success({ message: '' }));
     }, 3000);
   }
 
-  function HandleError(error) {
-    setError(error);
+  function HandleError(errormessage) {
+    dispatch(error({ message: errormessage }));
   }
 
   useEffect(() => {
@@ -69,7 +68,6 @@ export const ListCards = ({ id, name, HandleArchiveList }) => {
   if (Object.keys(cards).length != 0) {
     return (
       <div style={{ overflowX: 'scroll' }} className="card">
-        {error && <Error error={error} HandleError={HandleError} />}{' '}
         {success && <Success success={success} />}
         {showedit && (
           <CardClick

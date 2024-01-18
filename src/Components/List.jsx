@@ -4,26 +4,23 @@ import { ListCards } from './ListCards';
 import { TextField, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { CreateList, GetListInBoard } from '../Api';
-import Error from './Error';
-import { Success } from './Success';
 import { useDispatch, useSelector } from 'react-redux';
 import { addList, getList } from '../Slices/ListSlice';
+import { error, success } from '../Slices/HandleSlice';
 
 export const List = () => {
   const dispatch = useDispatch();
-  //const [List, setList] = useState([]);
+
   const List = useSelector((state) => state.List.List);
-  // console.log(list1);
+
   const [search, setSearch] = useState('');
   const [shower, setShower] = useState(false);
   const [archive, setArchive] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   function HandleSuccess(data) {
-    setSuccess(data);
+    dispatch(success({ message: data }));
     setTimeout(() => {
-      setSuccess('');
+      dispatch(success({ message: '' }));
     }, 3000);
   }
 
@@ -47,8 +44,8 @@ export const List = () => {
   function HandleArchiveList() {
     setArchive(!archive);
   }
-  function HandleError(error) {
-    setError(error);
+  function HandleError(errormessage) {
+    dispatch(error({ message: errormessage }));
   }
   if (back.length != 0) {
     let backer = back.filter((e) => e.id == id)[0];
@@ -68,8 +65,6 @@ export const List = () => {
 
     return (
       <div style={styleback} className="cont">
-        {error && <Error error={error} HandleError={HandleError} />}
-        {success && <Success success={success} />}
         <h1 className="list-header">{backer.name}</h1>
         <div id="contain">
           {List.map((element) => {
